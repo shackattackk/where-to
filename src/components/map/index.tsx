@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { Restaurant } from "@/app/model/restaurants";
 import { fetchInitialRestaurants } from "@/lib/overpass";
-
+import ReviewDialog from "../review-dialog";
 
 const MapComponent: React.FC = () => {
   const position: LatLngExpression = [42.3601, -71.0589];
@@ -24,7 +24,7 @@ const MapComponent: React.FC = () => {
       center={position}
       zoom={13}
       scrollWheelZoom={false}
-      style={{ height: "600px", width: "1000px" }}
+      style={{ height: "600px", width: "1000px", zIndex: 0}}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -38,16 +38,16 @@ const MapComponent: React.FC = () => {
             icon={icon}
           >
             <Popup>
-              <h2>{restaurant.tags.name}</h2>
+              <div className="flex flex-col gap-4 items-center justify-center">
+                <h2 className="font-bold">{restaurant.tags.name}</h2>
+                {/* <Button variant="default" size="sm" onClick={() => console.log(restaurant.tags.name)}>
+                  Add Review
+                </Button> */}
+                <ReviewDialog />
+              </div>
             </Popup>
           </Marker>
         ))}
-
-      {/* <Marker position={position} icon={icon}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker> */}
     </MapContainer>
   );
 };
