@@ -12,3 +12,13 @@ export interface RestaurantTags {
   cuisine?: string;
   name: string;
 }
+
+export interface RestaurantProps {
+  name: string;
+  photos: string[];
+  menu: string[];
+  contact: {
+    phone: string;
+    address: string;
+  };
+}
