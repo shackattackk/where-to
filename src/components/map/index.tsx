@@ -38,7 +38,7 @@ const MapComponent: React.FC = () => {
             icon={icon}
           >
             <Popup>
-              <div className="flex flex-col gap-4 items-center justify-center">
+              <div className="flex flex-col space-y-4 items-center justify-center">
                 <h2 className="font-bold">{restaurant.tags.name}</h2>
                 {/* <Button variant="default" size="sm" onClick={() => console.log(restaurant.tags.name)}>
                   Add Review
