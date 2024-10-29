@@ -14,7 +14,25 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import StarRating from "../ui/star-rating";
 
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const reviewSchema = z.object({
+  rating: z.number().min(1, "Rating is required").max(5, "Rating must be between 1 and 5"),
+  comments: z.string().min(1, "Comments are required"),
+});
+
 export default function ReviewDialog() {
+  const { handleSubmit, control, reset } = useForm<z.infer<typeof reviewSchema>>({
+    resolver: zodResolver(reviewSchema),
+  });
+
+  const onSubmit = (data: z.infer<typeof reviewSchema>) => {
+    console.log(data);
+    reset();
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,22 +45,40 @@ export default function ReviewDialog() {
             Please fill out the form below to add your review.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
           <div className="flex flex-col space-y-4">
             <Label>Rate your experience</Label>
-            <div className="flex items-center justify-center">
-              <StarRating onRatingChange={(rating) => console.log(rating)} />
-            </div>
+            <Controller
+              name="rating"
+              control={control}
+              render={({ field }) => (
+              <StarRating
+                {...field}
+                onRatingChange={field.onChange}
+              />
+              )}
+            />
           </div>
           <Label>Comments</Label>
-          <Textarea placeholder="Type your comments here." />
-        </div>
-        <DialogFooter>
-          <Button type="submit">Submit Review</Button>
+          <Controller
+            name="comments"
+            control={control}
+            render={({ field }) => (
+              <Textarea
+                placeholder="Type your comments here."
+                {...field}
+              />
+            )}
+          />
+          <DialogFooter>
           <DialogClose asChild>
-            <Button variant="secondary">Cancel</Button>
-          </DialogClose>
-        </DialogFooter>
+            <Button type="submit">Submit Review</Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button variant="secondary">Cancel</Button>
+            </DialogClose>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
