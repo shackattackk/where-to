@@ -19,12 +19,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 const reviewSchema = z.object({
-  rating: z.number().min(1, "Rating is required").max(5, "Rating must be between 1 and 5"),
+  rating: z
+    .number()
+    .min(1, "Rating is required")
+    .max(5, "Rating must be between 1 and 5"),
   comments: z.string().min(1, "Comments are required"),
 });
 
 export default function ReviewDialog() {
-  const { handleSubmit, control, reset } = useForm<z.infer<typeof reviewSchema>>({
+  const { handleSubmit, control, reset } = useForm<
+    z.infer<typeof reviewSchema>
+  >({
     resolver: zodResolver(reviewSchema),
   });
 
@@ -45,17 +50,17 @@ export default function ReviewDialog() {
             Please fill out the form below to add your review.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col space-y-4"
+        >
           <div className="flex flex-col space-y-4">
             <Label>Rate your experience</Label>
             <Controller
               name="rating"
               control={control}
               render={({ field }) => (
-              <StarRating
-                {...field}
-                onRatingChange={field.onChange}
-              />
+                <StarRating {...field} onRatingChange={field.onChange} />
               )}
             />
           </div>
@@ -64,15 +69,12 @@ export default function ReviewDialog() {
             name="comments"
             control={control}
             render={({ field }) => (
-              <Textarea
-                placeholder="Type your comments here."
-                {...field}
-              />
+              <Textarea placeholder="Type your comments here." {...field} />
             )}
           />
           <DialogFooter>
-          <DialogClose asChild>
-            <Button type="submit">Submit Review</Button>
+            <DialogClose asChild>
+              <Button type="submit">Submit Review</Button>
             </DialogClose>
             <DialogClose asChild>
               <Button variant="secondary">Cancel</Button>
