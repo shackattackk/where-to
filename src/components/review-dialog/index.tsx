@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -17,6 +19,7 @@ import StarRating from "../ui/star-rating";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { addReview } from "@/actions/review"; // Import the server action
 
 const reviewSchema = z.object({
   rating: z
@@ -33,8 +36,9 @@ export default function ReviewDialog() {
     resolver: zodResolver(reviewSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof reviewSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof reviewSchema>) => {
+    await addReview(data); 
+    console.log("Review submitted successfully");
     reset();
   };
 
