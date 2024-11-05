@@ -29,7 +29,11 @@ const reviewSchema = z.object({
   comments: z.string().min(1, "Comments are required"),
 });
 
-export default function ReviewDialog() {
+export default function ReviewDialog({
+  restaurantId,
+}: {
+  restaurantId: number;
+}) {
   const { handleSubmit, control, reset } = useForm<
     z.infer<typeof reviewSchema>
   >({
@@ -37,7 +41,7 @@ export default function ReviewDialog() {
   });
 
   const onSubmit = async (data: z.infer<typeof reviewSchema>) => {
-    await addReview(data); 
+    await addReview(data, restaurantId);
     console.log("Review submitted successfully");
     reset();
   };

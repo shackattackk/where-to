@@ -22,7 +22,7 @@ const MapComponent: React.FC = () => {
   return (
     <MapContainer
       center={position}
-      zoom={13}
+      zoom={15}
       scrollWheelZoom={false}
       style={{ height: "600px", width: "1000px", zIndex: 0}}
     >
@@ -38,13 +38,13 @@ const MapComponent: React.FC = () => {
             icon={icon}
           >
             <Popup>
-              <div className="flex flex-col space-y-4 items-center justify-center">
+                <div className="flex flex-col space-y-4 items-center justify-center">
                 <h2 className="font-bold">{restaurant.tags.name}</h2>
                 {/* <Button variant="default" size="sm" onClick={() => console.log(restaurant.tags.name)}>
                   Add Review
                 </Button> */}
-                <ReviewDialog />
-              </div>
+                <ReviewDialog restaurantId={restaurant.id} />
+                </div>
             </Popup>
           </Marker>
         ))}

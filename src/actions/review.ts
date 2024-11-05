@@ -12,13 +12,11 @@ const reviewSchema = z.object({
   comments: z.string().min(1, "Comments are required"),
 });
 
-function generateRestaurantId() {
-  return Math.floor(Math.random() * 1000000);
-}
-
-export async function addReview(data: z.infer<typeof reviewSchema>) {
+export async function addReview(
+  data: z.infer<typeof reviewSchema>,
+  restaurantId: number
+) {
   const parsedData = reviewSchema.parse(data);
-  const restaurantId = generateRestaurantId();
   await db.insert(reviews).values({
     rating: parsedData.rating,
     restaurantId: restaurantId,
