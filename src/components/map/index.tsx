@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { Restaurant } from "@/app/model/restaurants";
 import { fetchInitialRestaurants } from "@/lib/overpass";
@@ -11,21 +11,35 @@ const MapComponent: React.FC = () => {
   const icon = L.icon({ iconUrl: "/leaflet-markers/marker-icon.png" });
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
+  const fetchRestaurants = async (bounds?: L.LatLngBounds) => {
+    const data = await fetchInitialRestaurants(bounds);
+    setRestaurants(data);
+  };
+
+  const MapEvents = () => {
+    useMapEvents({
+      moveend: (event) => {
+        const map = event.target;
+        const bounds = map.getBounds();
+        fetchRestaurants(bounds);
+      },
+    });
+    return null;
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchInitialRestaurants();
-      setRestaurants(data);
-    };
-    fetchData();
+    fetchRestaurants();
   }, []);
 
   return (
     <MapContainer
+      id="map"
       center={position}
       zoom={15}
       scrollWheelZoom={false}
       style={{ height: "600px", width: "1000px", zIndex: 0}}
     >
+      <MapEvents />
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://carto.com/">CartoDB</a> contributors'
