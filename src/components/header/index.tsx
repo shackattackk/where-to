@@ -12,18 +12,18 @@ export default function Header() {
           <ul className="flex space-x-4">
             <li>
               <Link
-                href="/map"
+                href="/search"
                 className="text-muted-foreground hover:text-primary"
               >
-                Map
+                Search
               </Link>
             </li>
             <li>
               <Link
-                href="#reviews"
+                href="/map"
                 className="text-muted-foreground hover:text-primary"
               >
-                Reviews
+                Map
               </Link>
             </li>
           </ul>
