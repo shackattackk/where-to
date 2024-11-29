@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import { Restaurant } from "@/app/model/restaurants";
 import { fetchInitialRestaurants } from "@/lib/overpass";
@@ -37,7 +45,7 @@ const MapComponent: React.FC = () => {
       center={position}
       zoom={15}
       scrollWheelZoom={false}
-      style={{ height: "600px", width: "1000px", zIndex: 0}}
+      style={{ height: "600px", width: "1000px", zIndex: 0 }}
     >
       <MapEvents />
       <TileLayer
@@ -52,13 +60,16 @@ const MapComponent: React.FC = () => {
             icon={icon}
           >
             <Popup>
-                <div className="flex flex-col space-y-4 items-center justify-center">
+              <div className="flex flex-col space-y-4 items-center justify-center">
                 <h2 className="font-bold">{restaurant.tags.name}</h2>
                 {/* <Button variant="default" size="sm" onClick={() => console.log(restaurant.tags.name)}>
                   Add Review
                 </Button> */}
                 <ReviewDialog restaurantId={restaurant.id} />
-                </div>
+                <Link href={`/restaurant/${restaurant.id}`}>
+                  <Button variant="outline">More Details</Button>
+                </Link>
+              </div>
             </Popup>
           </Marker>
         ))}

@@ -55,7 +55,6 @@ export async function getRestaurantAverageRating(
       })
       .from(reviews)
       .where(eq(reviews.restaurantId, restaurantId));
-
     return Number(result[0].averageRating) || 0;
   } catch (error) {
     console.error("Error calculating average rating:", error);
@@ -71,7 +70,6 @@ export async function getReviewCount(restaurantId: number): Promise<number> {
       })
       .from(reviews)
       .where(eq(reviews.restaurantId, restaurantId));
-
     return Number(result[0].count);
   } catch (error) {
     console.error("Error counting reviews:", error);
